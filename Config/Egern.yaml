@@ -161,46 +161,55 @@ rules:
       name: reject
       match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_reject_list.module
       policy: REJECT-DROP
+      update_interval: 86400
 
   - rule_set:
       name: Telegram
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list
       policy: Telegram
+      update_interval: 86400
       
   - rule_set:
       name: Facebook
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Facebook/Facebook.list
       policy: Facebook
+      update_interval: 86400
       
   - rule_set:
       name: Instagram 
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Instagram/Instagram.list
-      policy: Instagram            
+      policy: Instagram
+      update_interval: 86400
       
   - rule_set:
       name: Twitter
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
       policy: Twitter
+      update_interval: 86400
 
   - rule_set:
       name: Google
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list
       policy: Google
+      update_interval: 86400
       
   - rule_set:
       name: Microsoft
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Microsoft/Microsoft.list
-      policy: Microsoft    
+      policy: Microsoft
+      update_interval: 86400
 
   - rule_set:
       name: Ai
       match: https://raw.githubusercontent.com/Repcz/Tool/X/Egern/Rules/AI.yaml
       policy: Ai
+      update_interval: 86400
 
   - rule_set:
       name: Apple.All
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple_All.list
       policy: Apple
+      update_interval: 86400
 
   - geoip:
       match: CN
@@ -214,6 +223,7 @@ rules:
       name: proxy
       match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_proxy_list.module
       policy: Final兜底
+      update_interval: 86400
 
   - default:
       policy: Final兜底
