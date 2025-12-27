@@ -1,1 +1,245 @@
+####################################
+# 全局设置
+####################################
+
+ipv6: false
+http_port: 3080
+socks_port: 3090
+allow_external_connections: true
+vif_only: false
+hide_vpn_icon: false
+
+geoip_db_url: https://github.com/xream/geoip/releases/latest/download/ipinfo.country.mmdb
+asn_db_url: https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-ASN.mmdb
+
+proxy_latency_test_url: http://cp.cloudflare.com/generate_204
+direct_latency_test_url: http://taobao.com/
+
+compat_route: false
+include_all_networks: false
+include_apns: false
+include_cellular_services: false
+include_local_networks: false
+
+####################################
+# DNS
+####################################
+
+dns:
+  bootstrap:
+    - system
+  upstreams:
+    Foreign-DNS:
+      - https://dns.cloudflare.com/dns-query
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+      - https://1.1.1.1/dns-query
+      - https://dns.google/dns-query
+      - https://dns.quad9.net/dns-query
+  forward:
+    - wildcard:
+        match: '*'
+        value: Foreign-DNS
+  hosts:
+    iosapps.itunes.apple.com:
+      - iosapps.itunes.apple.com.download.ks-cdn.com
+  public_ip_lookup_url: https://ifconfig.me/ip
+
+####################################
+# Real IP（避免 Fake-IP）
+####################################
+
+real_ip_domains:
+  - '*.weixin.qq.com'
+  - mp.weixin.qq.com
+  - szextshort.weixin.qq.com
+
+####################################
+# 策略组（仅美国 · 手动选择）
+####################################
+
+policy_groups:
+
+  # 你的美国节点池（手动维护）
+  - select:
+      name: US-NODES
+      policies:
+        - US-Node-1
+        - US-Node-2
+        - US-Node-3
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/US.png
+
+  - select:
+      name: 国内直连
+      policies:
+        - DIRECT
+      flatten: true
+      hidden: true
+
+  - select:
+      name: 广告拦截
+      policies:
+        - REJECT
+      flatten: true
+      hidden: true
+
+  - select:
+      name: Apple
+      policies:
+        - DIRECT
+      flatten: true
+
+  ####################################
+  # 应用分流（全部手动选 US 节点）
+  ####################################
+
+  - select:
+      name: Telegram
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Telegram.png
+
+  - select:
+      name: Facebook
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/FI.png
+
+  - select:
+      name: Instagram
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/IN.png
+
+  - select:
+      name: 国际抖音
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TikTok.png
+
+  - select:
+      name: Google
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google.png
+
+  - select:
+      name: ChatGPT
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/CCCAT_C.png
+
+  - select:
+      name: Netflix
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Netflix.png
+
+  - select:
+      name: Microsoft
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Windows.png
+
+  ####################################
+  # Final 兜底（美国）
+  ####################################
+
+  - select:
+      name: Final兜底
+      policies:
+        - US-NODES
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Trojan_Letter.png
+
+####################################
+# 规则（Rules）——保持原逻辑
+####################################
+
+rules:
+  - rule_set:
+      name: reject
+      match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_reject_list.module
+      policy: REJECT-DROP
+
+  - rule_set:
+      name: Telegram
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list
+      policy: Telegram
+
+  - rule_set:
+      name: Twitter
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
+      policy: US-NODES
+
+  - rule_set:
+      name: 谷歌
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list
+      policy: Google
+
+  - rule_set:
+      name: AI
+      match: https://raw.githubusercontent.com/Repcz/Tool/X/Egern/Rules/AI.yaml
+      policy: ChatGPT
+
+  - rule_set:
+      name: Apple.All
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple_All.list
+      policy: Apple
+
+  - geoip:
+      match: CN
+      policy: DIRECT
+
+  - domain_suffix:
+      match: cn
+      policy: DIRECT
+
+  - rule_set:
+      name: proxy
+      match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_proxy_list.module
+      policy: Final兜底
+
+  - default:
+      policy: Final兜底
+
+####################################
+# 重写 / 脚本 / MitM
+####################################
+
+url_rewrites:
+  - match: ^https?://(.*?L[.])?(?:glgoogle).cn
+    location: https://$1google.com
+    status_code: 302
+    disabled: true
+
+scriptings:
+  - schedule:
+      name: 黄历
+      cron: 30 10 * * *
+      script_url: https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/js/Mine/wnCalendar/wnCalendar.js
+
+mitm:
+  enabled: true
+  ca_p12: egern.p12
+  ca_passphrase: egern
+  hostnames:
+    includes:
+      - kelee.one
+
+####################################
+# 模块（Modules）
+####################################
+
+modules:
+  - name: sub-store配置同步
+    url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/main/Surge/Official/Sub-Store.official.sgmodule
+    enabled: true
+
+  - name: 流媒体解锁检测
+    url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/main/Surge/Official/流媒体解锁检测.official.sgmodule
+    enabled: true
+
+  - name: Google搜索重定向
+    url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/main/Surge/Google重定向.sgmodule
+    enabled: true
 
