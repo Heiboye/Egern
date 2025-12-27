@@ -88,7 +88,7 @@ policy_groups:
       policies:
         - DIRECT
       flatten: true
-      icon: https://raw.githubusercontent.com/Heiboye/Egern/refs/heads/main/icon/Apple.png
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Apple.png
 
   ####################################
   # 应用分流（全部手动选 US 节点）
@@ -113,7 +113,7 @@ policy_groups:
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/IN.png
 
   - select:
-      name: 国际抖音
+      name: TikTok
       policies:
         - US-NODES
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TikTok.png
@@ -125,16 +125,10 @@ policy_groups:
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google.png
 
   - select:
-      name: ChatGPT
+      name: Ai
       policies:
         - US-NODES
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/CCCAT_C.png
-
-  - select:
-      name: Netflix
-      policies:
-        - US-NODES
-      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Netflix.png
 
   - select:
       name: Microsoft
@@ -166,21 +160,36 @@ rules:
       name: Telegram
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Telegram/Telegram.list
       policy: Telegram
-
+      
+  - rule_set:
+      name: Facebook
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Facebook/Facebook.list
+      policy: Facebook
+      
+  - rule_set:
+      name: Instagram 
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Instagram/Instagram.list
+      policy: Instagram            
+      
   - rule_set:
       name: Twitter
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
-      policy: US-NODES
+      policy: Twitter
 
   - rule_set:
-      name: 谷歌
+      name: Google
       match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Google/Google.list
       policy: Google
+      
+  - rule_set:
+      name: Microsoft
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Microsoft/Microsoft.list
+      policy: Microsoft    
 
   - rule_set:
-      name: AI
+      name: Ai
       match: https://raw.githubusercontent.com/Repcz/Tool/X/Egern/Rules/AI.yaml
-      policy: ChatGPT
+      policy: Ai
 
   - rule_set:
       name: Apple.All
