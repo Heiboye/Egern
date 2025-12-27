@@ -155,12 +155,29 @@ policy_groups:
 ####################################
 # 规则（Rules）——保持原逻辑
 ####################################
-
 rules:
+
+  # ——— 白名单放行资源，避免错拦元素 ———
+  - domain:
+      match: static.cloudflareinsights.com
+      policy: DIRECT
+
+  - domain_suffix:
+      match: whatsapp.net
+      policy: DIRECT
+
+  - domain_suffix:
+      match: whatsapp.com
+      policy: DIRECT
+
+  - domain_suffix:
+      match: fbcdn.net
+      policy: DIRECT
+
   - rule_set:
       name: reject
       match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_reject_list.module
-      policy: REJECT-DROP
+      policy: REJECT
       update_interval: 86400
 
   - rule_set:
