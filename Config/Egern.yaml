@@ -88,6 +88,7 @@ policy_groups:
       policies:
         - DIRECT
       flatten: true
+      icon: https://raw.githubusercontent.com/Heiboye/Egern/refs/heads/main/icon/Apple.png
 
   ####################################
   # 应用分流（全部手动选 US 节点）
@@ -211,13 +212,7 @@ url_rewrites:
     location: https://$1google.com
     status_code: 302
     disabled: true
-
-scriptings:
-  - schedule:
-      name: 黄历
-      cron: 30 10 * * *
-      script_url: https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/js/Mine/wnCalendar/wnCalendar.js
-
+    
 mitm:
   enabled: true
   ca_p12: egern.p12
