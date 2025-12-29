@@ -166,23 +166,11 @@ policy_groups:
 ####################################
 rules:
 
-  # ——— 白名单放行资源，避免错拦元素 ———
+# ——— 白名单放行资源 (Cloudflare统计通常无关紧要，可以留着) ———
   - domain:
       match: static.cloudflareinsights.com
       policy: DIRECT
-
-  - domain_suffix:
-      match: whatsapp.net
-      policy: DIRECT
-
-  - domain_suffix:
-      match: whatsapp.com
-      policy: DIRECT
-
-  - domain_suffix:
-      match: fbcdn.net
-      policy: DIRECT
-
+      
   - rule_set:
       name: reject
       match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_reject_list.module
@@ -277,9 +265,6 @@ mitm:
 ####################################
 
 modules:
-  - name: sub-store配置同步
-    url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/main/Surge/Official/Sub-Store.official.sgmodule
-    enabled: true
 
   - name: 流媒体解锁检测
     url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/main/Surge/Official/流媒体解锁检测.official.sgmodule
