@@ -1,7 +1,6 @@
 ####################################
 # 全局设置
-####################################
-
+####################################  
 ipv6: false
 http_port: 3080
 socks_port: 3090
@@ -28,18 +27,28 @@ include_local_networks: false
 dns:
   bootstrap:
     - system
+    - 233.5.5.5
+    - 119.29.29.29
   upstreams:
-    Foreign-DNS:
-      - https://dns.cloudflare.com/dns-query
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
-      - https://1.1.1.1/dns-query
-      - https://dns.google/dns-query
-      - https://dns.quad9.net/dns-query
+      CN-DNS:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+      Foreign-DNS:
+    - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
   forward:
+    - proxy_rule_set:
+      match: https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Surge/China/China_All.list
+      value: CN-DNS
+      disabled: false
+    - proxy_rule_set:
+      match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global_All.list
+      value: Foreign-DNS
+      disabled: false
     - wildcard:
-        match: '*'
-        value: Foreign-DNS
+      match: '*'
+      value: Foreign-DNS
+      disabled: false
   hosts:
     iosapps.itunes.apple.com:
       - iosapps.itunes.apple.com.download.ks-cdn.com
